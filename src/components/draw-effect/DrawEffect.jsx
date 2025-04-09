@@ -5,11 +5,11 @@ import gsap from "gsap";
 /**
  * DrawEffect Component - Displays an energetic particle animation when a game ends in a draw
  *
- * @param {Object} props Component props
- * @param {boolean} props.active Whether the draw effect is currently active
- * @param {Function} props.onComplete Callback function to call when animation completes
- * @param {Function} props.onReset Function to reset the game
- * @param {number} props.duration Duration of the animation in milliseconds (default: 5000)
+ * @param {Object} props
+ * @param {boolean} props.active
+ * @param {Function} props.onComplete
+ * @param {Function} props.onReset
+ * @param {number} props.duration
  */
 const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
   const [animating, setAnimating] = useState(false);
@@ -18,7 +18,6 @@ const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
   const particlesRef = useRef(null);
 
   const animateDrawEffect = useCallback(() => {
-    // Create a timeline for the animation sequence
     const tl = gsap.timeline();
     animationRef.current = tl;
 
@@ -30,7 +29,6 @@ const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
       ease: "power2.out",
     });
 
-    // Animate the energy orb
     tl.to(
       ".energy-orb",
       {
@@ -42,7 +40,6 @@ const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
       "-=0.3"
     );
 
-    // Create particle explosion after a slight delay
     tl.to(
       ".energy-orb",
       {
@@ -50,7 +47,6 @@ const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
         duration: 0.6,
         ease: "power2.inOut",
         onComplete: () => {
-          // Create particle container if it doesn't exist
           if (!particlesRef.current) {
             particlesRef.current = document.createElement("div");
             particlesRef.current.className = "particles-container";
@@ -59,23 +55,19 @@ const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
               .appendChild(particlesRef.current);
           }
 
-          // Clear existing particles
           particlesRef.current.innerHTML = "";
 
-          // Generate new particles
           const colors = ["#3b82f6", "#8b5cf6", "#ec4899", "#10b981"];
           const orbElement = document.querySelector(".energy-orb");
           const rect = orbElement.getBoundingClientRect();
           const centerX = rect.left + rect.width / 2;
           const centerY = rect.top + rect.height / 2;
 
-          // Create many particles
           for (let i = 0; i < 60; i++) {
             const color = colors[Math.floor(Math.random() * colors.length)];
             const particle = createParticle(centerX, centerY, color);
             particlesRef.current.appendChild(particle);
 
-            // Animate each particle
             gsap.to(particle, {
               x: (Math.random() - 0.5) * 400,
               y: (Math.random() - 0.5) * 400,
@@ -95,7 +87,6 @@ const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
       "+=0.2"
     );
 
-    // Pulse rings
     tl.to(
       ".pulse-ring",
       {
@@ -110,7 +101,6 @@ const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
       "-=0.5"
     );
 
-    // Show the reset button and draw label
     tl.to(
       ".draw-reset-button, .draw-label",
       {
@@ -128,7 +118,6 @@ const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
       setAnimating(true);
       animateDrawEffect();
 
-      // Set a timeout to call onComplete after animation duration
       timeoutRef.current = setTimeout(() => {
         setAnimating(false);
         if (onComplete) onComplete();
@@ -136,7 +125,6 @@ const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
     }
 
     return () => {
-      // Clean up timeout and animation on unmount
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -147,34 +135,27 @@ const DrawEffect = ({ active, onComplete, onReset, duration = 5000 }) => {
   }, [active, onComplete, animating, duration, animateDrawEffect]);
 
   const handleDismiss = () => {
-    // Clear the timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
 
-    // Call onComplete callback
     if (onComplete) onComplete();
 
-    // Hide the animation
     setAnimating(false);
 
-    // Kill any ongoing animations
     if (animationRef.current) {
       animationRef.current.kill();
     }
   };
 
   const handleReset = (e) => {
-    // Stop event propagation to prevent the overlay click from triggering
     if (e) {
       e.stopPropagation();
     }
 
-    // First dismiss the animation
     handleDismiss();
 
-    // Then reset the game
     if (onReset) {
       onReset();
     }

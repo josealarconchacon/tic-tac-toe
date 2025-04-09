@@ -74,7 +74,6 @@
   gap: $grid-gap;
 }
 
-// Media queries for responsive design
 @media (max-width: 480px) {
   .board-row {
     gap: 6px;

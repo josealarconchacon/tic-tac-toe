@@ -2,7 +2,6 @@ import React from "react";
 import "./Square.scss";
 
 const Square = ({ value, onSquareClick }) => {
-  // Determine which player's mark to render
   const renderMark = () => {
     if (!value) return null;
 

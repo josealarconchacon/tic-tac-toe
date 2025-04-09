@@ -34,7 +34,7 @@ const ConfettiEffect = ({ winner }) => {
     return () => clearInterval(interval);
   }, [winner]);
 
-  return null; // This component doesn't render anything
+  return null;
 };
 
 export default ConfettiEffect;
