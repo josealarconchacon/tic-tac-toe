@@ -2,7 +2,11 @@
 
 A simple and fun Tic Tac Toe game built with React.
 
-![Tic Tac Toe Logo](./public/logo192.png)
+<div style="display: flex; justify-content: space-between;">
+  <img src="https://github.com/user-attachments/assets/1ccb17f1-004c-4749-8c86-71551eced170" width="32%" alt="Game Screenshot 1">
+  <img src="https://github.com/user-attachments/assets/aa181ea5-c5d5-4a04-b709-8dae738625fa" width="32%" alt="Game Screenshot 2">
+  <img src="https://github.com/user-attachments/assets/fa5828bb-9b6a-4cf3-82d1-e70a2d4d5389" width="32%" alt="Game Screenshot 3">
+</div>
 
 ## Features
 
