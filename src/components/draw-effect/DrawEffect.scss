@@ -1,0 +1,495 @@
+@import "../../styles/variables.scss";
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes balance {
+  0% {
+    transform: rotate(-5deg);
+  }
+  25% {
+    transform: rotate(3deg);
+  }
+  50% {
+    transform: rotate(-2deg);
+  }
+  75% {
+    transform: rotate(1deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.draw-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  &.animate {
+    visibility: visible;
+    pointer-events: all;
+  }
+
+  .draw-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+    .draw-effect.animate & {
+      opacity: 1;
+    }
+  }
+
+  .draw-grid {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+
+    .draw-effect.animate & {
+      animation: fadeIn 0.8s ease 0.3s forwards;
+    }
+
+    .grid-cell {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+    }
+  }
+
+  .draw-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    color: white;
+    text-align: center;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease 0.5s forwards;
+  }
+
+  .balance-icon {
+    position: relative;
+    width: 240px;
+    height: 160px;
+    margin-bottom: 30px;
+    opacity: 0;
+
+    .draw-effect.animate & {
+      opacity: 1;
+    }
+
+    .balance-beam {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 180px;
+      height: 8px;
+      background-color: #f8d64e;
+      border-radius: 4px;
+      transform: translate(-50%, -50%);
+      transform-origin: center;
+      box-shadow: 0 0 15px rgba(248, 214, 78, 0.6);
+
+      .draw-effect.animate & {
+        animation: balance 2s ease-in-out forwards;
+      }
+    }
+
+    .balance-pan {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-color: #2a2a2a;
+      border: 3px solid #f8d64e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+      &.pan-left {
+        left: 10px;
+        top: 75px;
+
+        .draw-effect.animate & {
+          animation: float 3s ease-in-out infinite;
+        }
+      }
+
+      &.pan-right {
+        right: 10px;
+        top: 75px;
+
+        .draw-effect.animate & {
+          animation: float 3s ease-in-out 0.5s infinite;
+        }
+      }
+
+      .player-symbol {
+        font-size: 32px;
+        font-weight: bold;
+        color: white;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+      }
+    }
+  }
+
+  .draw-message {
+    text-align: center;
+    opacity: 0;
+
+    .draw-effect.animate & {
+      animation: fadeUp 0.8s ease 1.2s forwards;
+    }
+
+    .message-text {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+
+      .draw-effect.animate & {
+        animation: pulse 2s ease-in-out 1.5s infinite;
+      }
+    }
+
+    .message-subtext {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 5px;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+
+    .dismiss-hint {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-top: 20px;
+      font-style: italic;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .draw-grid {
+    width: 250px;
+    height: 250px;
+  }
+
+  .balance-icon {
+    width: 200px;
+    height: 140px;
+
+    .balance-beam {
+      width: 150px;
+    }
+
+    .balance-pan {
+      width: 60px;
+      height: 60px;
+
+      .player-symbol {
+        font-size: 28px;
+      }
+    }
+  }
+
+  .draw-message {
+    .message-text {
+      font-size: 36px;
+    }
+
+    .message-subtext {
+      font-size: 18px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .draw-grid {
+    width: 200px;
+    height: 200px;
+  }
+
+  .balance-icon {
+    width: 180px;
+    height: 120px;
+
+    .balance-beam {
+      width: 120px;
+    }
+
+    .balance-pan {
+      width: 50px;
+      height: 50px;
+
+      .player-symbol {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .draw-message {
+    .message-text {
+      font-size: 30px;
+    }
+
+    .message-subtext {
+      font-size: 16px;
+    }
+  }
+}
+
+.board-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: $card-radius;
+  overflow: hidden;
+  backdrop-filter: blur(0px);
+  transition: backdrop-filter 0.3s ease;
+}
+
+.energy-effect-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.energy-orb {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(139, 92, 246, 0.8) 0%,
+    rgba(59, 130, 246, 0.6) 50%,
+    rgba(236, 72, 153, 0.4) 100%
+  );
+  box-shadow: 0 0 30px 5px rgba(139, 92, 246, 0.4),
+    inset 0 0 20px rgba(255, 255, 255, 0.2);
+  transform: scale(0);
+  opacity: 0;
+  z-index: 2;
+  filter: blur(2px);
+}
+
+.pulse-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 4px solid transparent;
+  opacity: 0.6;
+  transform: scale(0);
+  z-index: 1;
+
+  &.ring1 {
+    width: 150px;
+    height: 150px;
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  }
+
+  &.ring2 {
+    width: 200px;
+    height: 200px;
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  }
+
+  &.ring3 {
+    width: 250px;
+    height: 250px;
+    border-color: rgba(236, 72, 153, 0.5);
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+  }
+}
+
+.particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  opacity: 0.9;
+  transform: translate(-50%, -50%);
+  filter: blur(1px);
+  box-shadow: 0 0 8px currentColor;
+  z-index: 4;
+}
+
+@media (max-width: 600px) {
+  .energy-orb {
+    width: 80px;
+    height: 80px;
+  }
+
+  .pulse-ring {
+    &.ring1 {
+      width: 120px;
+      height: 120px;
+    }
+
+    &.ring2 {
+      width: 160px;
+      height: 160px;
+    }
+
+    &.ring3 {
+      width: 200px;
+      height: 200px;
+    }
+  }
+
+  .particle {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+.draw-label {
+  position: absolute;
+  font-size: 3rem;
+  font-weight: 800;
+  color: white;
+  text-shadow: 0 0 15px rgba(139, 92, 246, 0.8);
+  opacity: 0;
+  transform: translateY(20px);
+  top: 30%;
+  text-align: center;
+  letter-spacing: 1px;
+  z-index: 5;
+}
+
+.draw-reset-button {
+  position: absolute;
+  bottom: 30%;
+  padding: 0.95rem 2.5rem;
+  border: none;
+  border-radius: $border-radius;
+  background: linear-gradient(135deg, $primary-blue, $primary-blue-dark);
+  color: $white;
+  font-size: $button-size;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s $bounce-curve;
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.1);
+  min-width: 200px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(20px);
+  z-index: 5;
+
+  &:hover {
+    background: linear-gradient(135deg, $primary-blue-dark, $accent-purple);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.4),
+      0 0 10px rgba(37, 99, 235, 0.2), inset 0 2px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2),
+      inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media (max-width: 600px) {
+  .draw-label {
+    font-size: 2.5rem;
+  }
+
+  .draw-reset-button {
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    min-width: 160px;
+  }
+}

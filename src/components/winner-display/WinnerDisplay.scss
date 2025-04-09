@@ -1,0 +1,102 @@
+@import "../../styles/variables";
+@import "../../styles/animations";
+
+.winner-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($dark-overlay, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2rem, 8vw, $heading-size);
+  font-weight: 800;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(
+    135deg,
+    darken($winner-green, 10%),
+    $winner-green,
+    lighten($winner-green, 20%)
+  );
+  opacity: 0;
+  transform: scale(0.8);
+  animation: pop-in 0.5s $bounce-curve forwards;
+  border-radius: $card-radius;
+  z-index: 10;
+  text-shadow: 0 2px 15px rgba(16, 185, 129, 0.5);
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 0 3px rgba($winner-green, 0.3);
+  padding: 1.5rem 3rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at center,
+      rgba(16, 185, 129, 0.15),
+      transparent 70%
+    );
+    z-index: -1;
+    border-radius: inherit;
+    animation: pulse 3s infinite;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: $card-radius + 10px;
+    background: transparent;
+    border: 2px solid rgba($winner-green, 0.3);
+    animation: winner-pulse 2s infinite;
+    z-index: -1;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.75rem;
+    padding: 1rem 2rem;
+  }
+}
+
+@keyframes winner-pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px 5px rgba(16, 185, 129, 0.4);
+    border-color: rgba(16, 185, 129, 0.8);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

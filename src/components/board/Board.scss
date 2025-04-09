@@ -1,0 +1,125 @@
+@import "../../styles/variables";
+@import "../../styles/animations";
+
+.board {
+  position: relative;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: $card-radius;
+  padding: clamp(1rem, 4vw, $card-padding * 1.5);
+  width: 100%;
+  max-width: $board-max-width;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  transition: all 0.4s $animation-curve;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: linear-gradient(
+      135deg,
+      rgba(139, 92, 246, 0.3),
+      rgba(59, 130, 246, 0.1),
+      rgba(236, 72, 153, 0.3)
+    );
+    border-radius: calc($card-radius + 1px);
+    z-index: -1;
+    opacity: 0.7;
+    filter: blur(2px);
+  }
+
+  &.draw-state {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+      inset 0 0 20px rgba(59, 130, 246, 0.2), 0 0 15px rgba(59, 130, 246, 0.3),
+      0 0 0 1px rgba(59, 130, 246, 0.2);
+
+    &::before {
+      background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.4),
+        rgba(236, 72, 153, 0.1),
+        rgba(59, 130, 246, 0.4)
+      );
+      animation: rotate-gradient 8s linear infinite;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35),
+      inset 0 2px 0 rgba(255, 255, 255, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  @media (max-width: 480px) {
+    border-radius: calc($card-radius * 0.75);
+    padding: 0.75rem;
+  }
+}
+
+.board-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex: 1;
+  gap: $grid-gap;
+}
+
+// Media queries for responsive design
+@media (max-width: 480px) {
+  .board-row {
+    gap: 6px;
+  }
+
+  :global(.square) {
+    width: calc(33.333% - 4px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+    font-size: clamp(1.75rem, 10vw, 2.5rem);
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .board-row {
+    gap: 8px;
+  }
+
+  :global(.square) {
+    width: calc(33.333% - 6px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+  }
+}
+
+@media (min-width: 769px) {
+  .board-row {
+    gap: $grid-gap;
+  }
+
+  :global(.square) {
+    width: calc(33.333% - 8px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+  }
+}
+
+@keyframes rotate-gradient {
+  0% {
+    filter: hue-rotate(0deg) blur(2px);
+  }
+  100% {
+    filter: hue-rotate(360deg) blur(2px);
+  }
+}

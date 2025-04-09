@@ -1,0 +1,158 @@
+@import "../../styles/variables";
+@import "../../styles/animations";
+
+.status {
+  margin-bottom: $margin-standard;
+  font-size: clamp(1.1rem, 3.5vw, $status-size);
+  font-weight: 600;
+  text-align: center;
+  padding: 1rem 1.75rem;
+  border-radius: $card-radius;
+  position: relative;
+  z-index: 1;
+  min-width: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s $animation-curve;
+  color: $secondary-text;
+
+  .status-text {
+    transition: transform 0.2s ease;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 1.5rem;
+    width: 100%;
+    max-width: 350px;
+    padding: 0.85rem 1.25rem;
+  }
+
+  &.winner {
+    color: $winner-green;
+    font-weight: 700;
+    box-shadow: 0 0 24px rgba(16, 185, 129, 0.25),
+      inset 0 2px 4px rgba(255, 255, 255, 0.15);
+    animation: pulse 2s infinite;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(
+        45deg,
+        rgba(16, 185, 129, 0),
+        rgba(16, 185, 129, 0.5),
+        rgba(16, 185, 129, 0)
+      );
+      border-radius: calc($card-radius + 2px);
+      z-index: -1;
+      animation: border-glow 3s infinite linear;
+    }
+  }
+
+  &.draw {
+    color: $primary-blue;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Player indicator styling
+.player-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  margin-left: 0.75rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+  transition: all 0.3s $bounce-curve;
+  animation: bounce-in 0.4s $bounce-curve;
+  position: relative;
+
+  &.player-x {
+    color: $player-x-color;
+    background: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
+  }
+
+  &.player-o {
+    color: $player-o-color;
+    background: rgba(236, 72, 153, 0.2);
+    box-shadow: 0 0 12px rgba(236, 72, 153, 0.35);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid currentColor;
+    opacity: 0.5;
+    animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+@keyframes border-glow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

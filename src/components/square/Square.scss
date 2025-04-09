@@ -1,0 +1,118 @@
+@import "../../styles/variables";
+@import "../../styles/animations";
+
+.square {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border: none;
+  border-radius: $border-radius;
+  background: rgba(30, 41, 59, 0.6);
+  font-size: $square-size;
+  font-weight: bold;
+  color: $secondary-text;
+  cursor: pointer;
+  transition: all 0.25s $bounce-curve;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  backdrop-filter: blur(5px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+
+  // Add a subtle grid pattern
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center center;
+    z-index: 0;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &:hover {
+    background: rgba(51, 65, 85, 0.8);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.15),
+      0 10px 20px rgba(0, 0, 0, 0.25);
+
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  // Add a hint effect for empty squares
+  &:empty::after {
+    content: "";
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    transition: all 0.2s ease;
+  }
+
+  &:hover:empty::after {
+    opacity: 0.5;
+  }
+
+  // Style for X player
+  &:has(:first-child[data-player="x"]) {
+    color: $player-x-color;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 0 15px rgba(59, 130, 246, 0.3);
+
+    span {
+      text-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+      animation: mark-appear 0.3s $bounce-curve forwards;
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  // Style for O player
+  &:has(:first-child[data-player="o"]) {
+    color: $player-o-color;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 0 15px rgba(236, 72, 153, 0.3);
+
+    span {
+      text-shadow: 0 0 10px rgba(236, 72, 153, 0.8);
+      animation: mark-appear 0.3s $bounce-curve forwards;
+      position: relative;
+      z-index: 2;
+    }
+  }
+}
+
+@keyframes mark-appear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
